@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Resolve Duplicate Columns (Query Merge)</title>
+</head>
+<body>
+    <h2>Resolve Duplicate Columns (Query Merge)</h2>
+    <form method="post" action="/merge/fields">
+        {% for i in range(query_count) %}
+            <input type="hidden" name="query_ref_{{i}}" value="{{merge_info[i].ref}}">
+            <input type="hidden" name="merge_field_{{i}}" value="{{merge_info[i].field}}">
+        {% endfor %}
+        <input type="hidden" name="query_count" value="{{query_count}}">
+        <table border="1">
+            <tr>
+                <th>Column Name</th>
+                {% for q in merge_info %}
+                    <th>{{ q.ref }}</th>
+                {% endfor %}
+                <th>Keep</th>
+            </tr>
+            {% for col, refs in duplicates.items() %}
+            <tr>
+                <td>{{ col }}</td>
+                {% for q in merge_info %}
+                    <td>
+                        {% if q.ref in refs %}
+                            <ul>
+                            {% for val in previews[col][q.ref] %}
+                                <li>{% if val is none %}<span style="color:gray">NULL</span>{% else %}{{ val }}{% endif %}</li>
+                            {% endfor %}
+                            </ul>
+                        {% else %}
+                            &mdash;
+                        {% endif %}
+                    </td>
+                {% endfor %}
+                <td>
+                    <select name="keep_{{col}}">
+                        {% for r in refs %}
+                            <option value="{{r}}">{{r}}</option>
+                        {% endfor %}
+                    </select>
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+        <button type="submit">Continue Merge</button>
+    </form>
+</body>
+</html>

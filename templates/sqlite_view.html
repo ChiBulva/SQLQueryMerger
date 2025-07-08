@@ -1,0 +1,178 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="container mt-4">
+    <h2 class="mb-4">SQLite Results Viewer</h2>
+
+    {% if error %}
+        <div class="alert alert-danger">Error: {{ error }}</div>
+    {% endif %}
+    {% if tables %}
+        <h4>Tables</h4>
+        <div class="list-group mb-3">
+        {% for table in tables %}
+            <div class="list-group-item d-flex justify-content-between align-items-center">
+                <div>
+                    <a href="/sqlite/{{ table }}" class="fw-bold">{{ table }}</a>
+                </div>
+                <div>
+                    <a href="/sqlite/{{ table }}/download" class="btn btn-sm btn-success me-1">Download Excel</a>
+                    <a href="/sqlite/{{ table }}/download_csv_stream" class="btn btn-sm btn-outline-primary me-1">Download CSV</a>
+                    <!--<a href="/sqlite/{{ table }}/download_csv_native" class="btn btn-sm btn-warning me-1">Raw CSV Export (Fast)</a>-->
+                    <form action="/sqlite/{{ table }}/delete" method="post" class="d-inline" onsubmit="return confirm('Delete this table?');">
+                        <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                    </form>
+                </div>
+            </div>
+        {% endfor %}
+        </div>
+    {% endif %}
+    {% if merged_tables %}
+        <h4>Merged Tables</h4>
+        <div class="list-group mb-3">
+        {% for table in merged_tables %}
+            <div class="list-group-item d-flex justify-content-between align-items-center">
+                <div>
+                    <a href="/sqlite/{{ table }}" class="fw-bold">{{ table }}</a>
+                </div>
+                <div>
+                    <a href="/sqlite/{{ table }}/download" class="btn btn-sm btn-success me-1">Download Excel</a>
+                    <a href="/sqlite/{{ table }}/download_csv_stream" class="btn btn-sm btn-outline-primary me-1">Download CSV</a>
+                    <!--<a href="/sqlite/{{ table }}/download_csv_native" class="btn btn-sm btn-warning me-1">Raw CSV Export (Fast)</a>-->
+                    <form action="/sqlite/{{ table }}/delete" method="post" class="d-inline" onsubmit="return confirm('Delete this table?');">
+                        <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                    </form>
+                </div>
+            </div>
+        {% endfor %}
+        </div>
+    {% endif %}
+    {% if table_name %}
+        <h4 class="mt-4">Table: <span class="text-primary">{{ table_name }}</span></h4>
+        <form method="get" action="/sqlite/{{ table_name }}" class="row g-2 mb-3">
+            <div class="col-auto">
+                <input type="text" name="search" value="{{ search }}" class="form-control" placeholder="Search in results...">
+            </div>
+            <div class="col-auto">
+                <button type="submit" class="btn btn-outline-primary">Search</button>
+            </div>
+            <input type="hidden" name="page" value="1">
+        </form>
+        <div class="mb-2">
+            <b>Rows:</b> Showing {{ (page-1)*20+1 }} to {{ (page-1)*20+rows|length }} of {{ total_rows }}
+            {% if search %}(matching '{{ search }}'){% endif %}
+            | <b>Page:</b> {{ page }} of {{ total_pages }}
+        </div>
+        <div class="table-responsive">
+            <table class="table table-bordered table-striped table-sm" id="sqlite-table-viewer">
+                <thead class="table-light">
+                    <tr>
+                    {% for col in columns %}
+                        <th class="editable-col" data-col="{{ col }}">{{ col }}</th>
+                    {% endfor %}
+                    </tr>
+                </thead>
+                <tbody>
+                {% for row in rows %}
+                    <tr>
+                        {% for value in row %}
+                            <td>
+                                {% if value is string and value|length > 0 %}
+                                    <a href="/sqlite/{{ table_name }}?search={{ value }}">{{ value }}</a>
+                                {% else %}
+                                    {{ value }}
+                                {% endif %}
+                            </td>
+                        {% endfor %}
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <form method="get" action="/sqlite/{{ table_name }}" class="mt-3">
+            <input type="hidden" name="search" value="{{ search }}">
+            <div class="d-flex align-items-center">
+                {% if page > 1 %}
+                    <button type="submit" name="page" value="{{ page - 1 }}" class="btn btn-outline-secondary me-2">Previous</button>
+                {% endif %}
+                <span>Page {{ page }} of {{ total_pages }} ({{ total_rows }} rows{% if search %} matching '{{ search }}'{% endif %})</span>
+                {% if page < total_pages %}
+                    <button type="submit" name="page" value="{{ page + 1 }}" class="btn btn-outline-secondary ms-2">Next</button>
+                {% endif %}
+            </div>
+        </form>
+    {% endif %}
+<!-- ...existing code... -->
+</div>
+{% endblock %}
+{% block scripts %}
+<script>
+// Enable double-click to edit column name
+document.addEventListener('DOMContentLoaded', function() {
+  document.querySelectorAll('.editable-col').forEach(function(th) {
+    th.addEventListener('dblclick', function(e) {
+      if (th.querySelector('input')) return; // Already editing
+      var oldName = th.dataset.col;
+      var input = document.createElement('input');
+      input.type = 'text';
+      input.value = oldName;
+      input.size = Math.max(8, oldName.length);
+      th.textContent = '';
+      th.appendChild(input);
+      input.focus();
+      input.select();
+      // Cancel on Escape
+      input.addEventListener('keydown', function(ev) {
+        if (ev.key === 'Escape') {
+          th.textContent = oldName;
+          th.dataset.col = oldName;
+        }
+      });
+      // Submit on Enter or blur
+      function trySubmit() {
+        var newName = input.value.trim();
+        if (!newName || newName === oldName) {
+          th.textContent = oldName;
+          th.dataset.col = oldName;
+          return;
+        }
+        // Check for duplicates
+        var allCols = Array.from(document.querySelectorAll('.editable-col')).map(x => x.dataset.col);
+        if (allCols.includes(newName)) {
+          alert('Duplicate column name: ' + newName);
+          input.focus();
+          return;
+        }
+        // Submit via fetch
+        fetch(`/sqlite/{{ table_name }}/rename_column`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+          body: `old_name=${encodeURIComponent(oldName)}&new_name=${encodeURIComponent(newName)}`
+        }).then(resp => resp.json()).then(data => {
+          if (data.success) {
+            th.textContent = newName;
+            th.dataset.col = newName;
+            // Optionally reload page to update data
+            location.reload();
+          } else {
+            alert('Rename failed: ' + (data.error || 'Unknown error'));
+            th.textContent = oldName;
+            th.dataset.col = oldName;
+          }
+        }).catch(err => {
+          alert('Rename failed: ' + err);
+          th.textContent = oldName;
+          th.dataset.col = oldName;
+        });
+      }
+      input.addEventListener('blur', trySubmit);
+      input.addEventListener('keydown', function(ev) {
+        if (ev.key === 'Enter') {
+          trySubmit();
+        }
+      });
+    });
+  });
+});
+</script>
+{% endblock %}

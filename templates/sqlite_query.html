@@ -1,0 +1,77 @@
+
+{% extends "base.html" %}
+{% block content %}
+<div class="container mt-4">
+  <h2>Run SQL Query on Local SQLite DB</h2>
+  <form method="post" action="/sqlite/run/query" class="mb-4">
+    <div class="mb-3">
+      <label for="sql" class="form-label">SQL Query:</label>
+      <textarea class="form-control" id="sql" name="sql" rows="8" style="font-family:monospace;">{{ sql or '' }}</textarea>
+    </div>
+    <button type="submit" class="btn btn-primary">Run Query</button>
+  </form>
+  {% if error %}
+    <div class="alert alert-danger mt-3">{{ error }}</div>
+  {% endif %}
+  {% if columns and rows %}
+    <h4 class="mt-4">Results</h4>
+    <div class="mb-2">
+      <b>Rows:</b> Showing {{ (page-1)*20+1 }} to {{ (page-1)*20+rows|length }} of {{ total_rows }}
+      {% if search %}(matching '{{ search }}'){% endif %}
+      | <b>Page:</b> {{ page }} of {{ total_pages }}
+    </div>
+    <form method="post" action="/sqlite/run/query" class="row g-2 mb-3">
+      <input type="hidden" name="sql" value="{{ sql }}">
+      <div class="col-auto">
+        <input type="text" name="search" value="{{ search }}" class="form-control" placeholder="Search in results...">
+      </div>
+      <div class="col-auto">
+        <button type="submit" class="btn btn-outline-primary">Search</button>
+      </div>
+      <input type="hidden" name="page" value="1">
+    </form>
+    <div class="table-responsive">
+      <table class="table table-bordered table-sm">
+        <thead class="table-light">
+          <tr>
+            {% for col in columns %}<th>{{ col }}</th>{% endfor %}
+          </tr>
+        </thead>
+        <tbody>
+          {% for row in rows %}
+          <tr>
+            {% for cell in row %}
+              <td>
+                {% if cell is string and cell|length > 0 %}
+                  <form method="post" action="/sqlite/run/query" style="display:inline;">
+                    <input type="hidden" name="sql" value="{{ sql }}">
+                    <input type="hidden" name="search" value="{{ cell }}">
+                    <input type="hidden" name="page" value="1">
+                    <button type="submit" style="background:none;border:none;padding:0;color:#007bff;text-decoration:underline;cursor:pointer;">{{ cell }}</button>
+                  </form>
+                {% else %}
+                  {{ cell }}
+                {% endif %}
+              </td>
+            {% endfor %}
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    <form method="post" action="/sqlite/run/query" class="mt-3">
+      <input type="hidden" name="sql" value="{{ sql }}">
+      <input type="hidden" name="search" value="{{ search }}">
+      <div class="d-flex align-items-center">
+        {% if page > 1 %}
+          <button type="submit" name="page" value="{{ page - 1 }}" class="btn btn-outline-secondary me-2">Previous</button>
+        {% endif %}
+        <span>Page {{ page }} of {{ total_pages }}</span>
+        {% if page < total_pages %}
+          <button type="submit" name="page" value="{{ page + 1 }}" class="btn btn-outline-secondary ms-2">Next</button>
+        {% endif %}
+      </div>
+    </form>
+  {% endif %}
+</div>
+{% endblock %}

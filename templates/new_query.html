@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container mt-4">
+    <h2 class="mb-4">Add New SQL Query</h2>
+    {% if error %}
+        <div class="alert alert-danger">{{ error }}</div>
+    {% endif %}
+    <form method="post" class="mb-4">
+        <div class="mb-3">
+            <label for="connection_name" class="form-label">Connection:</label>
+            <select id="connection_name" name="connection_name" class="form-select" required>
+                {% for conn in connections %}
+                    <option value="{{ conn }}">{{ conn }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="mb-3">
+            <label for="query_name" class="form-label">Query File Name (.sql):</label>
+            <input type="text" id="query_name" name="query_name" class="form-control" required>
+        </div>
+        <div class="mb-3">
+            <label for="query_content" class="form-label">SQL Content:</label>
+            <textarea id="query_content" name="query_content" rows="10" class="form-control" required></textarea>
+        </div>
+        <button type="submit" class="btn btn-success">Save Query</button>
+        <a href="/" class="btn btn-link">&larr; Back to Home</a>
+    </form>
+</div>
+{% endblock %}

@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container mt-4">
+    <h1 class="mb-4">Welcome to the RFID Query App</h1>
+    <div class="row mb-4">
+        <div class="col-md-6">
+            <div class="list-group">
+                <a href="/connections" class="list-group-item list-group-item-action">Manage DB Connections</a>
+                <a href="/querys/new" class="list-group-item list-group-item-action">Add New SQL Query</a>
+                <a href="/sqlite" class="list-group-item list-group-item-action">View SQLite Results</a>
+                <a href="/sqlite/run/query" class="list-group-item list-group-item-action">Run SQL Text Query on SQLite</a>
+                <a href="/merge" class="list-group-item list-group-item-action">Merge Query Results (Run Queries)</a>
+                <a href="/merge_sqlite" class="list-group-item list-group-item-action">Merge Existing SQLite Tables</a>
+            </div>
+        </div>
+    </div>
+    <h2>Connections</h2>
+    {% if connections %}
+    <div class="card">
+        <div class="card-body p-0">
+            <table class="table table-hover mb-0">
+                <thead class="table-light">
+                    <tr>
+                        <th>Connection Name</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for conn in connections %}
+                    <tr>
+                        <td>{{ conn }}</td>
+                        <td>
+                            <a href="/querys/{{ conn }}" class="btn btn-sm btn-primary">View Queries</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    {% else %}
+        <div class="alert alert-info mt-3">No connections found. Please add a connection.</div>
+    {% endif %}
+</div>
+{% endblock %}

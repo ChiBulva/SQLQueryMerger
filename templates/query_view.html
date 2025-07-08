@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h2>{{ query_name }} <small class="text-muted">({{ connection_name }})</small></h2>
+        <a href="/querys/{{ connection_name }}" class="btn btn-outline-secondary">Back to Query List</a>
+    </div>
+    {% if error %}
+        <div class="alert alert-danger">{{ error }}</div>
+    {% endif %}
+    <form action="/querys/{{ connection_name }}/{{ query_name }}/edit" method="post" class="mb-3">
+        <div class="mb-3">
+            <label for="query_content" class="form-label">SQL Query</label>
+            <textarea id="query_content" name="query_content" rows="12" class="form-control">{{ query_content }}</textarea>
+        </div>
+        <button type="submit" class="btn btn-success">Save Changes</button>
+    </form>
+    <div class="mb-3">
+        <form action="/run/{{ connection_name }}/{{ query_name }}" method="post" class="d-inline">
+            <button type="submit" class="btn btn-primary me-2">Run & Download Excel</button>
+        </form>
+        <form action="/run_save/{{ connection_name }}/{{ query_name }}" method="post" class="d-inline">
+            <button type="submit" class="btn btn-outline-primary me-2">Run & Save to SQLite</button>
+        </form>
+        <form action="/querys/{{ connection_name }}/{{ query_name }}/delete" method="post" class="d-inline" onsubmit="return confirm('Delete this query?');">
+            <button type="submit" class="btn btn-danger">Delete Query</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

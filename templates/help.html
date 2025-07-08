@@ -1,0 +1,92 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container mt-4">
+    <h2 class="mb-4"><i class="bi bi-info-circle-fill text-primary"></i> How to Use the RFID Query App</h2>
+    <div class="card mb-4">
+        <div class="card-body">
+            <h5 class="card-title">Overview</h5>
+            <p>This application lets you view, query, merge, and export data from your local <b>etl_layer.db</b> SQLite database. You can also run custom SQL queries, manage connections, and download results in Excel or CSV format.</p>
+        </div>
+    </div>
+    <div class="accordion mb-4" id="helpAccordion">
+        <div class="accordion-item">
+            <h2 class="accordion-header" id="headingTables">
+                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTables" aria-expanded="true" aria-controls="collapseTables">
+                    Viewing Tables
+                </button>
+            </h2>
+            <div id="collapseTables" class="accordion-collapse collapse show" aria-labelledby="headingTables" data-bs-parent="#helpAccordion">
+                <div class="accordion-body">
+                    <ul>
+                        <li>Click any table name on the <a href="/sqlite">SQLite Viewer</a> page to view its contents with fast pagination and search.</li>
+                        <li>Use the search box to filter rows by value.</li>
+                        <li>Navigate pages using the Previous/Next buttons.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="accordion-item">
+            <h2 class="accordion-header" id="headingExport">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExport" aria-expanded="false" aria-controls="collapseExport">
+                    Exporting Data
+                </button>
+            </h2>
+            <div id="collapseExport" class="accordion-collapse collapse" aria-labelledby="headingExport" data-bs-parent="#helpAccordion">
+                <div class="accordion-body">
+                    <ul>
+                        <li>Download table or merged table data as <b>Excel</b> or <b>CSV</b> using the buttons next to each table on the <a href="/sqlite">SQLite Viewer</a> page.</li>
+                        <li>For large tables, prefer CSV export for best performance and file size.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="accordion-item">
+            <h2 class="accordion-header" id="headingMerge">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseMerge" aria-expanded="false" aria-controls="collapseMerge">
+                    Merging Tables
+                </button>
+            </h2>
+            <div id="collapseMerge" class="accordion-collapse collapse" aria-labelledby="headingMerge" data-bs-parent="#helpAccordion">
+                <div class="accordion-body">
+                    <ul>
+                        <li>Use the <a href="/merge">Merge Queries</a> or <a href="/merge_sqlite">Merge SQLite Tables</a> features to combine tables or queries by matching fields.</li>
+                        <li>After merging, the new table appears under <b>Merged Tables</b> on the <a href="/sqlite">SQLite Viewer</a> page and can be viewed/exported like any other table.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="accordion-item">
+            <h2 class="accordion-header" id="headingQuery">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseQuery" aria-expanded="false" aria-controls="collapseQuery">
+                    Running Custom Queries
+                </button>
+            </h2>
+            <div id="collapseQuery" class="accordion-collapse collapse" aria-labelledby="headingQuery" data-bs-parent="#helpAccordion">
+                <div class="accordion-body">
+                    <ul>
+                        <li>Go to the <a href="/querys/new">New Query</a> page to run or save custom SQL queries.</li>
+                        <li>Saved queries are listed by connection on the <a href="/">Home</a> page and can be managed from there.</li>
+                        <li>Results can be exported or merged with other tables.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="accordion-item">
+            <h2 class="accordion-header" id="headingTips">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTips" aria-expanded="false" aria-controls="collapseTips">
+                    Tips & Troubleshooting
+                </button>
+            </h2>
+            <div id="collapseTips" class="accordion-collapse collapse" aria-labelledby="headingTips" data-bs-parent="#helpAccordion">
+                <div class="accordion-body">
+                    <ul>
+                        <li>For large exports, prefer CSV over Excel for speed and file size.</li>
+                        <li>Use the <b>Delete</b> button on the <a href="/sqlite">SQLite Viewer</a> page to remove tables you no longer need.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="alert alert-info"><i class="bi bi-info-circle"></i> For more help, contact your administrator or see the README.</div>
+</div>
+{% endblock %}

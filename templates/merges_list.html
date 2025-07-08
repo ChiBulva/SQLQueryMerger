@@ -1,0 +1,35 @@
+{% extends "home.html" %}
+{% block content %}
+<h2>Saved Merge Definitions</h2>
+{% if error %}<div class="alert alert-danger">{{ error }}</div>{% endif %}
+<table class="table table-bordered">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Timestamp</th>
+      <th>Output Table</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for merge in merges %}
+    <tr>
+      <td>{{ merge.name }}</td>
+      <td>{{ merge.timestamp }}</td>
+      <td>{{ merge.output_table }}</td>
+      <td>
+        <form method="post" action="/merges/{{ merge.name }}/rerun" style="display:inline">
+          <button class="btn btn-sm btn-primary" type="submit">Re-Run</button>
+        </form>
+        <form method="post" action="/merges/{{ merge.name }}/delete" style="display:inline" onsubmit="return confirm('Delete this merge definition?');">
+          <button class="btn btn-sm btn-danger" type="submit">Delete</button>
+        </form>
+        <a href="/merges/{{ merge.name }}" class="btn btn-sm btn-info">View</a>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+<a href="/merge_sqlite" class="btn btn-secondary">New SQLite Merge</a>
+<a href="/merge" class="btn btn-secondary">New Query Merge</a>
+{% endblock %}

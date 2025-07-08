@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>RFID Query App Feature Test Checklist</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Arial, sans-serif;
+      background: #f8f9fa;
+      margin: 0;
+      padding: 0;
+    }
+    .container {
+      max-width: 800px;
+      margin: 40px auto;
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+      padding: 32px 24px 24px 24px;
+    }
+    h1 {
+      text-align: center;
+      color: #2c3e50;
+      margin-bottom: 24px;
+    }
+    h2 {
+      color: #007bff;
+      margin-top: 32px;
+      margin-bottom: 12px;
+      font-size: 1.2em;
+      border-bottom: 1px solid #e0e0e0;
+      padding-bottom: 4px;
+    }
+    ul {
+      list-style: none;
+      padding-left: 0;
+    }
+    li {
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+    }
+    .test-label {
+      flex: 1 1 350px;
+      min-width: 200px;
+      text-align: left;
+      padding-right: 16px;
+      word-break: break-word;
+    }
+    .test-boxes {
+      display: flex;
+      gap: 18px;
+      min-width: 120px;
+      justify-content: flex-end;
+      align-items: center;
+    }
+    .pass-label, .fail-label {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 0.98em;
+      min-width: 48px;
+    }
+    input[type="checkbox"] {
+      width: 18px;
+      height: 18px;
+      accent-color: #007bff;
+      margin: 0 2px 0 0;
+      vertical-align: middle;
+    }
+    .fail-label input[type="checkbox"] {
+      accent-color: #e74c3c;
+    }
+    .section {
+      margin-bottom: 24px;
+    }
+    @media (max-width: 600px) {
+      .container { padding: 12px; }
+      h1 { font-size: 1.2em; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>RFID Query App Feature Test Checklist</h1>
+    <form id="checklistForm">
+      <div class="section">
+        <h2>General Navigation & UI</h2>
+        <ul>
+          <li><span class="test-label">Home page loads and all navigation links work</span><span class="test-boxes"><label class="pass-label"><input type="checkbox" class="pass">Pass</label><label class="fail-label"><input type="checkbox" class="fail">Fail</label></span></li>
+          <li><span class="test-label">All pages render correctly on desktop and mobile</span><span class="test-boxes"><label class="pass-label"><input type="checkbox" class="pass">Pass</label><label class="fail-label"><input type="checkbox" class="fail">Fail</label></span></li>
+          <li><span class="test-label">Error messages and user feedback display as expected</span><span class="test-boxes"><label class="pass-label"><input type="checkbox" class="pass">Pass</label><label class="fail-label"><input type="checkbox" class="fail">Fail</label></span></li>
+        </ul>
+      </div>
+      <div class="section">
+        <h2>Connection Management</h2>
+        <ul>
+          <li><span class="test-label">Add a new database connection (all auth types)</span><span class="test-boxes"><label class="pass-label"><input type="checkbox" class="pass">Pass</label><label class="fail-label"><input type="checkbox" class="fail">Fail</label></span></li>
+          <li><span class="test-label">Edit an existing connection</span><span class="test-boxes"><label class="pass-label"><input type="checkbox" class="pass">Pass</label><label class="fail-label"><input type="checkbox" class="fail">Fail</label></span></li>
+          <li><span class="test-label">Delete a connection</span><span class="test-boxes"><label class="pass-label"><input type="checkbox" class="pass">Pass</label><label class="fail-label"><input type="checkbox" class="fail">Fail</label></span></li>
+          <li><span class="test-label">Connection list updates after changes</span><span class="test-boxes"><label class="pass-label"><input type="checkbox" class="pass">Pass</label><label class="fail-label"><input type="checkbox" class="fail">Fail</label></span></li>
+        </ul>
+      </div>
+      <div class="section">
+        <h2>Query Management</h2>
+        <ul>
+          <li><span class="test-label">Add a new SQL query to a connection</span><span class="test-boxes"><label class="pass-label"><input type="checkbox" class="pass">Pass</label><label class="fail-label"><input type="checkbox" class="fail">Fail</label></span></li>
+          <li><span class="test-label">Edit an existing query</span><span class="test-boxes"><label class="pass-label"><input type="checkbox" class="pass">Pass</label><label class="fail-label"><input type="checkbox" class="fail">Fail</label></span></li>
+          <li><span class="test-label">Delete a query</span><span class="test-boxes"><label class="pass-label"><input type="checkbox" class="pass">Pass</label><label class="fail-label"><input type="checkbox" class="fail">Fail</label></span></li>
+          <li><span class="test-label">List queries for each connection</span><span class="test-boxes"><label class="pass-label"><input type="checkbox" class="pass">Pass</label><label class="fail-label"><input type="checkbox" class="fail">Fail</label></span></li>
+        </ul>
+      </div>
+      <div class="section">
+        <h2>Running Queries</h2>
+        <ul>
+          <li><span class="test-label">Run a query and download results as Excel</span><span class="test-boxes"><label class="pass-label"><input type="checkbox" class="pass">Pass</label><label class="fail-label"><input type="checkbox" class="fail">Fail</label></span></li>
+          <li><span class="test-label">Run a query and save results to SQLite</span><span class="test-boxes"><label class="pass-label"><input type="checkbox" class="pass">Pass</label><label class="fail-label"><input type="checkbox" class="fail">Fail</label></span></li>
+          <li><span class="test-label">View saved result tables in SQLite viewer</span><span class="test-boxes"><label class="pass-label"><input type="checkbox" class="pass">Pass</label><label class="fail-label"><input type="checkbox" class="fail">Fail</label></span></li>
+          <li><span class="test-label">Download SQLite table as Excel</span><span class="test-boxes"><label class="pass-label"><input type="checkbox" class="pass">Pass</label><label class="fail-label"><input type="checkbox" class="fail">Fail</label></span></li>
+          <li><span class="test-label">Delete a result table from SQLite</span><span class="test-boxes"><label class="pass-label"><input type="checkbox" class="pass">Pass</label><label class="fail-label"><input type="checkbox" class="fail">Fail</label></span></li>
+        </ul>
+      </div>
+      <div class="section">
+        <h2>SQLite Viewer</h2>
+        <ul>
+          <li><span class="test-label">List all result_ and merged_ tables</span><span class="test-boxes"><label class="pass-label"><input type="checkbox" class="pass">Pass</label><label class="fail-label"><input type="checkbox" class="fail">Fail</label></span></li>
+          <li><span class="test-label">View any table with pagination and search</span><span class="test-boxes"><label class="pass-label"><input type="checkbox" class="pass">Pass</label><label class="fail-label"><input type="checkbox" class="fail">Fail</label></span></li>
+          <li><span class="test-label">Click a cell value to search for that value</span><span class="test-boxes"><label class="pass-label"><input type="checkbox" class="pass">Pass</label><label class="fail-label"><input type="checkbox" class="fail">Fail</label></span></li>
+          <li><span class="test-label">Row metrics and page info display correctly</span><span class="test-boxes"><label class="pass-label"><input type="checkbox" class="pass">Pass</label><label class="fail-label"><input type="checkbox" class="fail">Fail</label></span></li>
+        </ul>
+      </div>
+      <div class="section">
+        <h2>Arbitrary SQL on SQLite</h2>
+        <ul>
+          <li><span class="test-label">Enter and run arbitrary SQL on SQLite</span><span class="test-boxes"><label class="pass-label"><input type="checkbox" class="pass">Pass</label><label class="fail-label"><input type="checkbox" class="fail">Fail</label></span></li>
+          <li><span class="test-label">Results show with pagination, search, and clickable cell search</span><span class="test-boxes"><label class="pass-label"><input type="checkbox" class="pass">Pass</label><label class="fail-label"><input type="checkbox" class="fail">Fail</label></span></li>
+          <li><span class="test-label">Error handling for invalid SQL</span><span class="test-boxes"><label class="pass-label"><input type="checkbox" class="pass">Pass</label><label class="fail-label"><input type="checkbox" class="fail">Fail</label></span></li>
+        </ul>
+      </div>
+      <div class="section">
+        <h2>Merge Features</h2>
+        <ul>
+          <li><span class="test-label">Merge multiple queries (from different connections)</span><span class="test-boxes"><label class="pass-label"><input type="checkbox" class="pass">Pass</label><label class="fail-label"><input type="checkbox" class="fail">Fail</label></span></li>
+          <li><span class="test-label">Merge multiple SQLite tables</span><span class="test-boxes"><label class="pass-label"><input type="checkbox" class="pass">Pass</label><label class="fail-label"><input type="checkbox" class="fail">Fail</label></span></li>
+          <li><span class="test-label">Select merge fields and handle duplicate columns</span><span class="test-boxes"><label class="pass-label"><input type="checkbox" class="pass">Pass</label><label class="fail-label"><input type="checkbox" class="fail">Fail</label></span></li>
+          <li><span class="test-label">Pagination and search in merge preview</span><span class="test-boxes"><label class="pass-label"><input type="checkbox" class="pass">Pass</label><label class="fail-label"><input type="checkbox" class="fail">Fail</label></span></li>
+          <li><span class="test-label">Clickable cell search in merge preview</span><span class="test-boxes"><label class="pass-label"><input type="checkbox" class="pass">Pass</label><label class="fail-label"><input type="checkbox" class="fail">Fail</label></span></li>
+          <li><span class="test-label">Save merged results as Excel, CSV, and new SQLite table</span><span class="test-boxes"><label class="pass-label"><input type="checkbox" class="pass">Pass</label><label class="fail-label"><input type="checkbox" class="fail">Fail</label></span></li>
+          <li><span class="test-label">View merged tables in SQLite viewer</span><span class="test-boxes"><label class="pass-label"><input type="checkbox" class="pass">Pass</label><label class="fail-label"><input type="checkbox" class="fail">Fail</label></span></li>
+        </ul>
+      </div>
+      <div class="section">
+        <h2>Merge Definitions</h2>
+        <ul>
+          <li><span class="test-label">List all saved merge definitions</span><span class="test-boxes"><label class="pass-label"><input type="checkbox" class="pass">Pass</label><label class="fail-label"><input type="checkbox" class="fail">Fail</label></span></li>
+          <li><span class="test-label">View, delete, and (optionally) re-run a merge definition</span><span class="test-boxes"><label class="pass-label"><input type="checkbox" class="pass">Pass</label><label class="fail-label"><input type="checkbox" class="fail">Fail</label></span></li>
+        </ul>
+      </div>
+      <div class="section">
+        <h2>Advanced/Edge Cases</h2>
+        <ul>
+          <li><span class="test-label">Handle empty/invalid form submissions gracefully</span><span class="test-boxes"><label class="pass-label"><input type="checkbox" class="pass">Pass</label><label class="fail-label"><input type="checkbox" class="fail">Fail</label></span></li>
+          <li><span class="test-label">Handle large tables/queries without UI or backend errors</span><span class="test-boxes"><label class="pass-label"><input type="checkbox" class="pass">Pass</label><label class="fail-label"><input type="checkbox" class="fail">Fail</label></span></li>
+          <li><span class="test-label">All error messages are clear and actionable</span><span class="test-boxes"><label class="pass-label"><input type="checkbox" class="pass">Pass</label><label class="fail-label"><input type="checkbox" class="fail">Fail</label></span></li>
+          <li><span class="test-label">No duplicate table or file names are created</span><span class="test-boxes"><label class="pass-label"><input type="checkbox" class="pass">Pass</label><label class="fail-label"><input type="checkbox" class="fail">Fail</label></span></li>
+          <li><span class="test-label">Renaming columns in SQLite works and errors are handled</span><span class="test-boxes"><label class="pass-label"><input type="checkbox" class="pass">Pass</label><label class="fail-label"><input type="checkbox" class="fail">Fail</label></span></li>
+        </ul>
+      </div>
+      <button type="button" class="reset-btn" onclick="resetChecklist()">Reset All</button>
+    </form>
+  </div>
+
+  <script>
+    // Save and load state from localStorage
+    const form = document.getElementById('checklistForm');
+    const storageKey = 'rfid_queryapp_checklist_v2';
+    function saveState() {
+      const state = Array.from(form.querySelectorAll('li')).map(li => {
+        const pass = li.querySelector('.pass').checked;
+        const fail = li.querySelector('.fail').checked;
+        return {pass, fail};
+      });
+      localStorage.setItem(storageKey, JSON.stringify(state));
+    }
+    function loadState() {
+      const state = JSON.parse(localStorage.getItem(storageKey) || '[]');
+      const items = Array.from(form.querySelectorAll('li'));
+      state.forEach((s, i) => {
+        if (items[i]) {
+          items[i].querySelector('.pass').checked = !!s.pass;
+          items[i].querySelector('.fail').checked = !!s.fail;
+        }
+      });
+    }
+    function resetChecklist() {
+      form.querySelectorAll('input[type=checkbox]').forEach(cb => cb.checked = false);
+      saveState();
+    }
+    // Only one of pass/fail can be checked at a time
+    form.addEventListener('change', e => {
+      if (e.target.classList.contains('pass') || e.target.classList.contains('fail')) {
+        const li = e.target.closest('li');
+        if (e.target.classList.contains('pass') && e.target.checked) {
+          li.querySelector('.fail').checked = false;
+        } else if (e.target.classList.contains('fail') && e.target.checked) {
+          li.querySelector('.pass').checked = false;
+        }
+        saveState();
+      }
+    });
+    window.addEventListener('DOMContentLoaded', loadState);
+  </script>
+</body>
+</html>

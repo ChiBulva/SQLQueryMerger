@@ -1,0 +1,98 @@
+
+{% if error %}
+  <div class="alert alert-danger" role="alert">
+    <b>Error:</b> {{ error }}
+  </div>
+  <a class="btn btn-secondary" href="/sqlite">Back to SQLite Viewer</a>
+{% else %}
+  <h2>Merged Table Created</h2>
+  <p>Table <b>{{ table_name }}</b> was created in SQLite and saved as Excel/CSV.</p>
+  <p>
+    <a class="btn btn-success" href="/sqlite/{{ table_name }}">View in SQLite Viewer</a>
+    <a class="btn btn-primary" href="/sqlite/{{ table_name }}/download">Download Excel</a>
+  </p>
+  <form method="post" action="/merge_sqlite/fields" class="mb-3">
+    <input type="hidden" name="already_saved" value="1">
+    <input type="hidden" name="table_name" value="{{ table_name }}">
+    <input type="hidden" name="table_count" value="{{ columns|length > 0 and rows|length > 0 and rows[0]|length or 0 }}">
+    {% if table_count %}
+      {% for i in range(table_count) %}
+        <input type="hidden" name="table_ref_{{i}}" value="{{ request.form.get('table_ref_' ~ i, '') }}">
+        <input type="hidden" name="merge_field_{{i}}" value="{{ request.form.get('merge_field_' ~ i, '') }}">
+      {% endfor %}
+    {% endif %}
+    <div class="row mb-2">
+      <div class="col-md-6">
+        <input type="text" name="search" value="{{ search }}" class="form-control" placeholder="Search in results...">
+      </div>
+      <div class="col-md-2">
+        <button type="submit" class="btn btn-info">Search</button>
+      </div>
+    </div>
+    <input type="hidden" name="page" value="{{ page }}">
+  </form>
+  <h4>Preview</h4>
+  <div style="margin-bottom:8px;">
+    <b>Rows:</b> Showing {{ (page-1)*20+1 }} to {{ (page-1)*20+rows|length }} of {{ total_rows }}
+    {% if search %}(matching '{{ search }}'){% endif %}
+    | <b>Page:</b> {{ page }} of {{ total_pages }}
+  </div>
+  <div style="overflow-x:auto;">
+    <table class="table table-bordered table-sm">
+      <thead>
+        <tr>
+          {% for col in columns %}<th>{{ col }}</th>{% endfor %}
+        </tr>
+      </thead>
+      <tbody>
+        {% for row in rows %}
+        <tr>
+          {% for cell in row %}
+            <td>
+              {% if cell is string and cell|length > 0 %}
+                <form method="post" action="/merge_sqlite/fields" style="display:inline;">
+                  <input type="hidden" name="already_saved" value="1">
+                  <input type="hidden" name="table_name" value="{{ table_name }}">
+                  <input type="hidden" name="search" value="{{ cell }}">
+                  <input type="hidden" name="page" value="1">
+                  <input type="hidden" name="table_count" value="{{ columns|length > 0 and rows|length > 0 and rows[0]|length or 0 }}">
+                  {% if table_count %}
+                    {% for i in range(table_count) %}
+                      <input type="hidden" name="table_ref_{{i}}" value="{{ request.form.get('table_ref_' ~ i, '') }}">
+                      <input type="hidden" name="merge_field_{{i}}" value="{{ request.form.get('merge_field_' ~ i, '') }}">
+                    {% endfor %}
+                  {% endif %}
+                  <button type="submit" style="background:none;border:none;padding:0;color:#007bff;text-decoration:underline;cursor:pointer;">{{ cell }}</button>
+                </form>
+              {% else %}
+                {{ cell }}
+              {% endif %}
+            </td>
+          {% endfor %}
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  <form method="post" action="/merge_sqlite/fields" class="d-flex justify-content-between align-items-center">
+    <input type="hidden" name="already_saved" value="1">
+    <input type="hidden" name="table_name" value="{{ table_name }}">
+    <input type="hidden" name="search" value="{{ search }}">
+    <input type="hidden" name="table_count" value="{{ columns|length > 0 and rows|length > 0 and rows[0]|length or 0 }}">
+    {% if table_count %}
+      {% for i in range(table_count) %}
+        <input type="hidden" name="table_ref_{{i}}" value="{{ request.form.get('table_ref_' ~ i, '') }}">
+        <input type="hidden" name="merge_field_{{i}}" value="{{ request.form.get('merge_field_' ~ i, '') }}">
+      {% endfor %}
+    {% endif %}
+    <div>
+      {% if page > 1 %}
+        <button type="submit" name="page" value="{{ page - 1 }}" class="btn btn-outline-primary">Previous</button>
+      {% endif %}
+      {% if page < total_pages %}
+        <button type="submit" name="page" value="{{ page + 1 }}" class="btn btn-outline-primary">Next</button>
+      {% endif %}
+    </div>
+  </form>
+  <a class="btn btn-secondary mt-3" href="/sqlite">Back to SQLite Viewer</a>
+{% endif %}

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Resolve Duplicate Columns</title>
+</head>
+<body>
+    <h2>Resolve Duplicate Columns</h2>
+    <form method="post" action="/merge_sqlite/fields">
+        {% for i in range(table_count) %}
+            <input type="hidden" name="table_ref_{{i}}" value="{{merge_info[i].table}}">
+            <input type="hidden" name="merge_field_{{i}}" value="{{merge_info[i].field}}">
+        {% endfor %}
+        <input type="hidden" name="table_count" value="{{table_count}}">
+        <table border="1">
+            <tr>
+                <th>Column Name</th>
+                {% for t in merge_info %}
+                    <th>{{ t.table }}</th>
+                {% endfor %}
+                <th>Keep</th>
+            </tr>
+            {% for col, tbls in duplicates.items() %}
+            <tr>
+                <td>{{ col }}</td>
+                {% for t in merge_info %}
+                    <td>
+                        {% if t.table in tbls %}
+                            <ul>
+                            {% for val in previews[col][t.table] %}
+                                <li>{{ val }}</li>
+                            {% endfor %}
+                            </ul>
+                        {% else %}
+                            &mdash;
+                        {% endif %}
+                    </td>
+                {% endfor %}
+                <td>
+                    <select name="keep_{{col}}">
+                        {% for t in tbls %}
+                            <option value="{{t}}">{{t}}</option>
+                        {% endfor %}
+                    </select>
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+        <button type="submit">Continue Merge</button>
+    </form>
+</body>
+</html>

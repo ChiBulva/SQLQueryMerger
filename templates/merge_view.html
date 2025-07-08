@@ -1,0 +1,6 @@
+{% extends "home.html" %}
+{% block content %}
+<h2>Merge Definition: {{ merge_name }}</h2>
+<pre style="background:#f8f8f8; padding:1em; border-radius:5px;">{{ merge | tojson(indent=2) }}</pre>
+<a href="/merges" class="btn btn-secondary">Back to Merge List</a>
+{% endblock %}

@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container mt-4">
+    <h2 class="mb-4">Select Merge Fields</h2>
+    <form method="post" action="/merge/fields" id="mergeForm" class="mb-4">
+        {% for q in queries %}
+            <div class="mb-3">
+                <b>{{ q['conn'] }}/{{ q['query'] }}</b><br>
+                <label class="form-label">Merge Field:</label>
+                <select name="merge_field_{{ loop.index0 }}" class="form-select">
+                    {% for alias in q['aliases'] %}
+                        <option value="{{ alias }}">{{ alias }}</option>
+                    {% endfor %}
+                </select>
+                <input type="hidden" name="query_ref_{{ loop.index0 }}" value="{{ q['conn'] }}::{{ q['query'] }}">
+            </div>
+        {% endfor %}
+        <input type="hidden" name="query_count" value="{{ queries|length }}">
+        <div class="mb-3">
+            <label class="form-label"><b>Join Type:</b></label><br>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" id="outer" name="join_type" value="outer" checked onchange="updateJoinExplanation()">
+                <label class="form-check-label" for="outer">Outer (include all rows, even if not matched)</label>
+            </div>
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" id="inner" name="join_type" value="inner" onchange="updateJoinExplanation()">
+                <label class="form-check-label" for="inner">Inner (only rows with matches in all lists)</label>
+            </div>
+            <div id="joinExplanation" class="form-text text-primary"></div>
+        </div>
+        <div class="mb-3">
+            <label for="merged_filename" class="form-label"><b>Merged File Name (optional):</b></label>
+            <input type="text" id="merged_filename" name="merged_filename" class="form-control" placeholder="e.g. my_merged_file">
+        </div>
+        <button type="submit" class="btn btn-success">Merge and Save</button>
+        <a href="/" class="btn btn-link">&larr; Back to Home</a>
+    </form>
+</div>
+{% endblock %}
+{% block scripts %}
+<script>
+function updateJoinExplanation() {
+    var joinType = document.querySelector('input[name="join_type"]:checked').value;
+    var expl = document.getElementById('joinExplanation');
+    if (joinType === 'inner') {
+        expl.textContent = 'Only rows with matches in all lists will be included (inner join).';
+    } else {
+        expl.textContent = 'All rows from all lists will be included, even if there is no match (outer join).';
+    }
+}
+updateJoinExplanation();
+</script>
+{% endblock %}

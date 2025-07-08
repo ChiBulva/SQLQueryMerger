@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container mt-4">
+    <h2 class="mb-3">Query Results</h2>
+    {% if error %}
+        <div class="alert alert-danger">Error: {{ error }}</div>
+    {% endif %}
+    {% if info %}
+        <div class="alert alert-success">{{ info }}</div>
+    {% endif %}
+    {% if runtime %}
+        <div class="mb-2"><strong>Query runtime:</strong> {{ runtime }}</div>
+    {% endif %}
+    {% if columns and rows %}
+    <div class="table-responsive">
+        <table class="table table-bordered table-striped table-sm">
+            <thead class="table-light">
+                <tr>
+                    {% for col in columns %}
+                        <th>{{ col }}</th>
+                    {% endfor %}
+                </tr>
+            </thead>
+            <tbody>
+                {% for row in rows %}
+                    <tr>
+                        {% for value in row %}
+                            <td>{{ value }}</td>
+                        {% endfor %}
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head><title>Edit Connection</title></head>
+<body>
+    <h1>Edit Database Connection</h1>
+    <form method="post">
+        <label>Name:</label><br>
+        <input type="text" name="name" value="{{ conn[0] }}" readonly><br>
+        <label>Driver:</label><br>
+        <input type="text" name="driver" value="{{ conn[1] }}" required><br>
+        <label>Server:</label><br>
+        <input type="text" name="server" value="{{ conn[2] }}" required><br>
+        <label>Database:</label><br>
+        <input type="text" name="database" value="{{ conn[3] }}" required><br>
+        <label>Username (optional):</label><br>
+        <input type="text" name="username" value="{{ conn[4] or '' }}"><br>
+        <label>Password (optional):</label><br>
+        <input type="password" name="password" value="{{ conn[5] or '' }}"><br>
+        <label>Authentication (optional):</label><br>
+        <select name="authentication">
+            {% for val, label in auth_options %}
+                <option value="{{ val }}" {% if conn[6] == val %}selected{% endif %}>{{ label }}</option>
+            {% endfor %}
+        </select><br>
+        <label>Extra (optional):</label><br>
+        <input type="text" name="extra" value="{{ conn[7] or '' }}"><br><br>
+        <input type="submit" value="Update Connection">
+    </form>
+    <a href="/connections">Back to Connections</a>
+</body>
+</html>

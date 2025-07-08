@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h2>Available Queries for <span class="text-primary">{{ connection_name }}</span></h2>
+        <a href="/" class="btn btn-outline-secondary">Back to Home</a>
+    </div>
+    {% if queries %}
+    <div class="card">
+        <div class="card-body p-0">
+            <table class="table table-hover mb-0">
+                <thead class="table-light">
+                    <tr>
+                        <th>Query Name</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for query in queries %}
+                    <tr>
+                        <td>{{ query }}</td>
+                        <td>
+                            <a href="/querys/{{ connection_name }}/{{ query }}" class="btn btn-sm btn-primary">View/Edit</a>
+                            <form action="/querys/{{ connection_name }}/{{ query }}/delete" method="post" class="d-inline" onsubmit="return confirm('Delete this query?');">
+                                <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                            </form>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    {% else %}
+        <div class="alert alert-info mt-3">No queries found for this connection.</div>
+    {% endif %}
+</div>
+{% endblock %}
