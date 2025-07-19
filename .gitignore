@@ -1,0 +1,29 @@
+# Ignore SQLite databases
+*.db
+
+# Python cache files
+__pycache__/
+*.py[cod]
+
+# VS Code settings (optional)
+.vscode/
+
+# OS-generated files
+.DS_Store
+Thumbs.db
+
+# Logs or temporary files
+*.log
+*.tmp
+*.swp
+
+# Ignore compiled or test files
+*.pyc
+*.pyo
+
+# Ignore test checklist files (like .html outputs if not app-facing)
+RFID_QueryApp_Feature_Test_Checklist.html
+
+# Optional: ignore backups or auto-save files
+*~
+*.bak
